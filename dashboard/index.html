@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	  <meta charset="UTF-8">
+	  
+	<title>Starter</title>
+	<script src="static/javascripts/d3.v3.min.js"></script>
+	<script src="static/javascripts/topojson.v1.min.js"></script>
+	<script src="static/javascripts/jquery.min.js"></script>
+	<script src="static/javascripts/d3.tip.v0.6.3.js"></script>
+  <script src="static/javascripts/queue.v1.min.js"></script>
+	<script src="static/javascripts/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="static/stylesheets/jquery-ui.css" />
+	<link rel="stylesheet" href="static/bootstrap-3.1.1-dist/css/bootstrap.min.css">
+	<script src="static/javascripts/jquery-ui.min.js"></script>
+	<link href="static/bootstrap-3.1.1-dist/css/bootstrap-glyphicons.css" rel="stylesheet">
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+	<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" type="text/css" href="static/stylesheets/basic.css"> </style>
+	
+     
+</head>
+
+<body>
+  <div class = "navbar navbar-default navbar-fixed-top" id ="header">
+    <div id = "title" class="row">Prototype 1:
+      <span style="font-size:14px">Geospatial Diets</span>
+    </div>
+    <div id = "tabs"  class="row">
+      <span class="tabs-about">About</span> |
+      <span class="tabs-twitter">Twitter Experiments</span>|
+      <span class="tabs-allData">All Data Charts</span> | 
+      <span class="tabs-dayByDay">Day by Day</span> | 
+      <span class="tabs-analysis">Analysis</span> | 
+    </div>
+  </div>
+  <div class="row" id="analysis">Analysis coming soon</div>
+  <div class="row" id="dayByDay">Daily charts coming soon</div>
+  <div class="row" id="allData">
+    <div class="col-md-4">
+      <div id = "dateRange" class="row"></div>
+      <div id = "sort" class="row withBorder">VIEWS<br/></div>
+      <div id = "map" class="row withBorder"></div>
+      <div id = "text" class="row withBorder"></div>
+    </div>
+    <div id = "line1" class="col-md-8 withBorder"></div>
+  </div>
+  <div id = "about" class="row">
+    <div id = "description" class = "col-md-6">
+      
+      <p>Using census data to provide a self assessment of my exposure to the city.</p>
+
+      <p>There is a lot to be gained by using urban data to highlight the ways we use the city, an assessment of our geospatial diet. Specifically, that self assessment of everyday exposure to the city as understood through data has the ability to inform our experiences, provide contextual understanding, highlight limitations in our experiences, and even give us opportunities to balance our diets.</p>
+      
+      <p>What is the geospatial health of your experiences in the city? Through publically available data of demographics, amenities, and other quality of life indicators, I am starting to measurie the qualities, diversity, and inequality in the parts of my city that I frequent.</p>
+      
+      <p>coming soon... tools for others to do the same.</p>
+      <div id="dayCounter"></div>
+      
+    </div>
+  </div>  
+  <div id = "twitter" class="row">
+  
+    <div class = "col-md-4" id = "twitter1">
+      <div class = "row"> 
+        <span style="font-size:48px">@censusPlaces</span>
+      </div>
+      <div class = "row">
+        This twitter account currently does 2 things:
+        <br/><br/>
+        
+        1. It follows me through the city.
+        Each time I move from one census block to another, 
+        the demographics of the place I had just left is tweeted with the amount of time I spent there.
+        <br/><br/>
+        2. It answers questions about your current location with census data. 
+        <span style="color:red">If you tweet at @censusPlaces with any message and your coordinates enabled on the tweet, you will get a reply with data about where you are.</span><br/><br/>
+        Click on 
+        <img src="images/locationSymbol.png" alt="map icon" style="height:30px;">
+        
+        then enable toggle at bottom of screen:<br/>
+        <img src="images/toggleCoordinates.PNG" alt="toggle" style = "width:300px">
+        
+        <br/><br/>
+        This enables the bot to look up your coordinates, but only for this tweet. Precise location is by default off when location is enabled.<br/><br/>
+        <i>Currently, only data for New York state and Massachusetts are loaded because they are my home states.</i>
+      </div>
+
+    </div>
+      
+    <div class = "col-md-4">
+      <a class="twitter-timeline" href="https://twitter.com/censusPlaces">censusPlaces</a>
+      <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+var startDate = new Date(2017,2-1,3);
+var today = new Date();
+var daysPassed = Math.round((today-startDate)/(1000*60*60*24))
+d3.select("#dayCounter").html("this experiemnt has been running since 2/3/2017 and has collected "+daysPassed+" days of data.")
+
+var divs = ["allData","about","twitter","analysis","dayByDay"]
+
+function tabDisplay(divName,divs){
+  d3.select("#tabs .tabs-"+divName)
+    .on("mouseover",function(){d3.select(this).style("opacity",.5)})
+    .on("mouseout",function(){d3.select(this).style("opacity",1)})
+    .on("click",function(){
+      for(var d in divs){
+        d3.select("#"+divs[d]).style("display","none")
+          d3.select("#tabs .tabs-"+divs[d]).style("color","black")
+      }
+      d3.select(this).style("color","red")
+      d3.select("#"+divName).style("display","block")
+  })
+  
+}
+for(var i in divs){
+  tabDisplay(divs[i], divs)
+  d3.select("#"+divs[i]).style("display","none") 
+}
+//d3.select("#about").style("display","block")
+d3.select("#twitter").style("display","block")
+d3.select("#tabs .tabs-twitter").style("color","red")
+
+</script>
+	
+<script src="index.js"></script>
+	
+</body>
+</html>
