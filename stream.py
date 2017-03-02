@@ -90,27 +90,26 @@ class StdOutListener(tweepy.StreamListener):
     def on_data(self, data):
         # Twitter returns data in JSON format - we need to decode it first
         decoded = json.loads(data)
-        #coordinates = decoded["coordinates"]["coordinates"]
+
         user = decoded['user']['screen_name']
         userId = decoded["id"]
         
-        print userId,user
         if user!="censusPlaces":
             if decoded["coordinates"] == None:
                 message = "@"+user+" share precise location is not enabled on your tweet. Please turn it on at bottom of screen and try again."
-                api.update_status(message,userId)
+                api.update_status(message)
             else:
                 if decoded["coordinates"]["coordinates"]==None:
-                    message = "@"+user+" 2 share precise location is not enabled on your tweet. Please turn it on at bottom of screen and try again."
-                    api.update_status(message,userId)
+                    message = "@"+user+" share precise location is not enabled on your tweet. Please turn it on at bottom of screen and try again."
+                    api.update_status(message)
                 else:
                     coordinates = decoded["coordinates"]["coordinates"]
                     lng = coordinates[0]
                     lat = coordinates[1]
                     bgid = getId(lng,lat)
                     if bgid == None:
-                        message = "@"+user+" i'm so sorry, i don't think you are in nyc and i didn't upload that data yet :("
-                        api.update_status(message,userId)
+                        message = "@"+user+" I'm so sorry, you are outside of my current dataset, please check back in a few days :("
+                        api.update_status(message)
                     else:
                         sentence = getData(bgid)
                         message = "@"+user+" "+sentence
@@ -130,7 +129,6 @@ class StdOutListener(tweepy.StreamListener):
 
 if __name__ == '__main__':
     l = StdOutListener()
-    
 #    test coordinates with these    
 #    coordinates = [42.225405, -73.289938]
 #    lng = coordinates[1]
